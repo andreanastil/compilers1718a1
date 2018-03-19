@@ -1,8 +1,31 @@
-
 def getchar(words,pos):
 	""" returns char at pos of words, or None if out of bounds """
 
 	if pos<0 or pos>=len(words): return None
+
+	if ord(text[pos])>=ord('0') and ord(text[pos])<=ord('1'):
+		return 'zero-one'
+
+	elif ord(text[pos])==ord('2'):
+		return 'two'
+
+	elif ord(text[pos])==ord('.') or ord(text[pos])==ord(':'):
+		return 'seperator'	
+
+	elif ord(text[pos])==ord('3'):
+		return 'three'	
+
+	elif ord(text[pos])==ord('4'):
+		return 'four'
+
+	elif ord(text[pos])==ord('5'):
+		return 'five'	
+		
+	elif ord(text[pos])>=ord('6') and ord(text[pos])<=ord('9'):
+		return 'six-nine'	
+
+	else:
+		return 'error'	
 
 	return words[pos]
 	
@@ -38,29 +61,22 @@ def scan(text,transition_table,accept_states):
 	
 # the transition table, as a dictionary
 
-# Αντικαταστήστε με το δικό σας λεξικό μεταβάσεων...
-td = { 'q0':{ 't':'q1','l':'q2' },
-       'q1':{ 'e':'q3' },
-       'q2':{ 'o':'q8' },
-       'q3':{ 's':'q4','r':'q6' },
-       'q4':{ 't':'q5' },
-       'q6':{ 'm':'q7' },
-       'q8':{ 'n':'q9' },
-       'q9':{ 'g':'q10'}
-     } 
+td = { 'q0':{ 'zero-one':'q1','two':'q4','three':'q2','four':'q2','five':'q2','six-nine':'q2'},
+       'q1':{ 'zero-one':'q2','two':'q2','three':'q2','four':'q2','five':'q2','six-nine':'q2','seperator':'q3'},
+       'q2':{ 'seperator':'q3'},
+       'q3':{ 'zero-one':'q5','two':'q5','three':'q5','four':'q5','five':'q5'},
+       'q4':{ 'zero-one':'q2','two':'q2','three':'q2','seperator':'q3'},
+       'q5':{ 'zero-one':'q6','two':'q6','three':'q6','four':'q6','five':'q6','six-nine':'q6'}
+     }  
 
 # the dictionary of accepting states and their
 # corresponding token
 
-# Αντικαταστήστε με το δικό σας λεξικό καταστάσεων αποδοχής...
-ad = { 'q5':'TEST_TOKEN',
-       'q7':'TERM_TOKEN',
-       'q10':'LONG_TOKEN'
-     }
+ad = { 'q6':'TIME_TOKEN'}  
 
 
 # get a string from input
-text = input('give some input>')
+text = input('check your time>')
 
 # scan text until no more input
 while text:	# that is, while len(text)>0
@@ -76,4 +92,3 @@ while text:	# that is, while len(text)>0
 	
 	# remaining text for next scan
 	text = text[position:]
-	
